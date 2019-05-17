@@ -1,0 +1,346 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Customers</h2>
+<div class="row">
+    <div class="col-lg-4">
+        <button class="btn btn-default btn-primary" data-toggle="modal" data-target="#myCreateModal">新增</button>
+    </div>
+    <div class="col-lg-4 col-lg-offset-4"></div>
+</div>
+<div class="row">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td>CustomerID</td>
+                <td>CompanyName</td>
+                <td>ContactName</td>
+                <td>City</td>
+                <td>刪除</td>
+            </tr>
+        </thead>
+        <tbody id="myTableBody"></tbody>
+    </table>
+</div>
+
+<!--Create Modal-->
+<div class="modal fade" id="myCreateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Customer Create</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="myCreateForm">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">CompanyName</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="CompanyName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">ContactName</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="ContactName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">ContactTitle</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="ContactTitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Address</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">City</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Region</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Region">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">PostalCode</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="PostalCode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Country</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Country">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Phone</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Fax</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Fax">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnCreate" onclick="Create()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modify Modal-->
+<div class="modal fade" id="myModifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modify Customer</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="myModifyForm">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">CustomerID</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="CustomerID" id="CustomerID">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">CompanyName</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="CompanyName" id="CompanyName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">ContactName</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="ContactName" id="ContactName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">ContactTitle</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="ContactTitle" id="ContactTitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Address</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Address" id="Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">City</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="City" id="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Region</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Region" id="Region">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">PostalCode</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="PostalCode" id="PostalCode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Country</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Country" id="Country">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Phone</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Phone" id="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Fax</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="Fax" id="Fax">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="Modify()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+    <script>
+
+        $(function() {
+            reload();
+        });
+
+        var reload = function () {
+            var action = '@Url.Action("GetCustomerList")';
+
+            var success = function (result) {
+                var html = '';
+                if (result.Data.length > 0) {
+                    $.each(result.Data,
+                        function(key, item) {
+                            html += '<tr>';
+                            html += '<td><a href="#" onclick="GetInfo(\'' +
+                                item.CustomerID +
+                                '\')">' +
+                                item.CustomerID +
+                                '</a></td>';
+                            html += '<td>' + item.CompanyName + '</td>';
+                            html += '<td>' + item.ContactName + '</td>';
+                            html += '<td>' + item.City + '</td>';
+                            html += '<td><a href="#" onclick="DelConfirm(\'' +
+                                item.CustomerID +
+                                '\')" class="text-danger"><i class="glyphicon glyphicon-trash"></i></a></td>';
+                            html += '</tr>';
+                        });
+
+                } else {
+                    html += '查無資料';
+                }
+                $("#myTableBody").html(html);
+            };
+
+            ajaxSend(null, action, null, null, null, success, null, null);
+        };
+
+        var GetInfo = function(customerID) {
+
+            var action = '@Url.Action("GetCustomerInfo")';
+            var data = { id: customerID };
+            var success = function(result) {
+                if (result.Succ) {
+                    var data = result.Data;
+                    $("#CustomerID").val(data.CustomerID);
+                    $("#CompanyName").val(data.CompanyName);
+                    $("#ContactName").val(data.ContactName);
+                    $("#ContactTitle").val(data.ContactTitle);
+                    $("#Address").val(data.Address);
+                    $("#City").val(data.City);
+                    $("#Region").val(data.Region);
+                    $("#PostalCode").val(data.PostalCode);
+                    $("#Country").val(data.Country);
+                    $("#Phone").val(data.Phone);
+                    $("#Fax").val(data.Fax);
+
+                    $("#myModifyModal").modal('show');
+                }
+
+            };
+            ajaxSend(null, action, data, null, null, success, null, null);
+        }
+
+        var DelConfirm = function(customerID) {
+
+            var url = '@Url.Action("Remove")';
+            var data = { id: customerID };
+            var success = function(result) {
+                if (result.Succ) {
+                    alert("刪除成功");
+                    reload();
+                } else {
+                    alert(result.Message);
+                }
+            }
+
+            ajaxSend(null, url, data, null, null, success, null, null);
+        }
+
+        var Create = function() {
+
+            var url = '@Url.Action("Add")';
+            var formData = $("#myCreateForm").serialize();
+            var success = function(result) {
+                if (result.Succ) {
+                    alert("新增成功");
+                    $("#myCreateModal").modal('hide');
+                    createFormClear();
+                    reload();
+                } else {
+                    alert(objData.Message);
+                }
+            };
+
+            ajaxSend(null, url, formData, null, null, success, null, null);
+        };
+
+        var Modify = function() {
+            var formData = $("#myModifyForm").serialize();
+            var url = '@Url.Action("Modify")';
+            var success = function(result) {
+                if (result.Succ) {
+                    alert("修改成功");
+                    //$.unblockUI();
+                    $("#myModifyModal").modal('hide');
+                    modifyFormClear();
+                    reload();
+                } else {
+                    alert(result.Message);
+                }
+            };
+            ajaxSend(null, url, formData, null, null, success, null, null);
+        };
+
+
+        var createFormClear = function() {
+            $('#myCreateForm input[name="CompanyName"]').val('');
+            $("#myCreateForm input[name='ContactName']").val('');
+            $("#myCreateForm input[name='ContactTitle']").val('');
+            $("#myCreateForm input[name='Address']").val('');
+            $("#myCreateForm input[name='City']").val('');
+            $("#myCreateForm input[name='Region']").val('');
+            $("#myCreateForm input[name='PostalCode']").val('');
+            $("#myCreateForm input[name='Country']").val('');
+            $("#myCreateForm input[name='Phone']").val('');
+            $("#myCreateForm input[name='Fax']").val('');
+        }
+
+        var modifyFormClear = function() {
+            $("#CompanyName").val('');
+            $("#ContactName").val('');
+            $("#ContactTitle").val('');
+            $("#Address").val('');
+            $("#City").val('');
+            $("#Region").val('');
+            $("#PostalCode").val('');
+            $("#Country").val('');
+            $("#Phone").val('');
+            $("#Fax").val('');
+
+        }
+
+
+
+
+    </script>
+
+}
