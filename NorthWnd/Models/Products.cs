@@ -11,11 +11,13 @@ namespace NorthWnd.Models
 {
     using System;
     using System.Collections.Generic;
+    using  Newtonsoft.Json;
     
     public partial class Products
     {
         public Products()
         {
+            
             this.Order_Details = new HashSet<Order_Details>();
         }
     
@@ -30,8 +32,11 @@ namespace NorthWnd.Models
         public Nullable<short> ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
     
+        [JsonIgnore()]
         public virtual Categories Categories { get; set; }
+        [JsonIgnore()]
         public virtual ICollection<Order_Details> Order_Details { get; set; }
+        [JsonIgnore()]
         public virtual Suppliers Suppliers { get; set; }
     }
 }

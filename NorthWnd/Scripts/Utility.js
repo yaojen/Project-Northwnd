@@ -20,15 +20,13 @@
         },
         success: function (data) {
             var objData = JSON.parse(data);
-            if (objData.Succ) {
-                if (pSuccess != undefined) {
-                    pSuccess(objData);
-                }
+            if (pSuccess != undefined){
+                pSuccess(objData);
             }
         },
         error: function (e) {
             if (pError != undefined) {
-                pError();
+                pError(e);
             }
         },
         complete: function (e) {
