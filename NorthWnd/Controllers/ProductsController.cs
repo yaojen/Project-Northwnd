@@ -21,11 +21,21 @@ namespace NorthWnd.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetProductList(int pageSize, int pageIndex)
+        public ActionResult GetProductList(int pageSize, int pageIndex, string ProductName)
         {
+            IEnumerable<Products> Productlist = db.Products.AsEnumerable();
+            int ProductCnt = 0;
+            if (!string.IsNullOrEmpty(ProductName))
+            {
+                Productlist = Productlist.Where(x => x.ProductName.Contains(ProductName)).AsEnumerable();
+            }
 
-            var ProductCnt = db.Products.Count();
-            var Productlist = db.Products.OrderBy(x => x.ProductID).Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsEnumerable();
+            ProductCnt = Productlist.Count();
+
+            Productlist = Productlist.OrderBy(x => x.ProductID)
+                                     .Skip(pageSize * (pageIndex - 1))
+                                     .Take(pageSize)
+                                     .AsEnumerable();
 
             DataTableReturnedData<Products> dataTableReturnedData = new DataTableReturnedData<Products>()
             {
@@ -86,7 +96,7 @@ namespace NorthWnd.Controllers
             }
             else
             {
-                return Json(JsonConvert.SerializeObject(new ApiError("12345", "驗證失敗"))); 
+                return Json(JsonConvert.SerializeObject(new ApiError("12345", "驗證失敗")));
             }
         }
 
