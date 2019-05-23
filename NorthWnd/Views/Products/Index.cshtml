@@ -324,27 +324,33 @@
             var formData = $("#myCreateForm").serialize();
             var beforeSend = function() {
                 $.blockUI({
-                    baseZ: 2000 });
+                    baseZ: 2000
+                });
                 $("#btnCreate").attr("disabled", "disabled");
             }
-         
+
             var success = function(result) {
                 if (result.Succ) {
                     alert("新增成功");
                     $("#myCreateModal").modal('hide');
                     createFormClear();
-                    $("#btnCreate").removeAttr("disabled");
-                    $.unblockUI();
                     $("#myTable").DataTable().ajax.reload(null, false);
                 } else {
                     alert(result.Message);
                 }
             };
 
+            var error = function() {
+                alert("系統錯誤,請洽管理人");
+            };
 
-            ajaxSend(null, url, formData, null, beforeSend, success, null, null);
+            var complete = function () {
+                $("#btnCreate").removeAttr("disabled");
+                $.unblockUI();
+            };
+
+            ajaxSend(null, url, formData, true, beforeSend, success, error, complete); //使用uiBlock 要把非同步設定為true
         };
-
 
         var createFormClear = function() {
             $("#myCreateForm input").each(function(key, item) {
