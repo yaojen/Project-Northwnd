@@ -204,7 +204,7 @@
 
 @section scripts
 {
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
     <script src="~/Scripts/Utility.js"></script>
 
     <script>
@@ -242,7 +242,11 @@
                 "ajax": function(data, callback, settings) {
                     ajaxSend(null,
                         '@Url.Action("GetProductList")',
-                        { pageSize: data.length, pageIndex: (data.start / data.length) + 1,ProductName:$("#SearchProductName").val() },
+                        {
+                            pageSize: data.length,
+                            pageIndex: (data.start / data.length) + 1,
+                            ProductName: $("#SearchProductName").val()
+                        },
                         null,
                         null,
                         function(result) {
@@ -318,37 +322,34 @@
         var Create = function() {
             var url = '@Url.Action("Create")';
             var formData = $("#myCreateForm").serialize();
+            var beforeSend = function() {
+                $.blockUI({
+                    baseZ: 2000 });
+                $("#btnCreate").attr("disabled", "disabled");
+            }
+         
             var success = function(result) {
                 if (result.Succ) {
                     alert("新增成功");
                     $("#myCreateModal").modal('hide');
                     createFormClear();
+                    $("#btnCreate").removeAttr("disabled");
+                    $.unblockUI();
                     $("#myTable").DataTable().ajax.reload(null, false);
                 } else {
                     alert(result.Message);
                 }
             };
 
-            ajaxSend(null, url, formData, null, null, success, null, null);
+
+            ajaxSend(null, url, formData, null, beforeSend, success, null, null);
         };
 
 
         var createFormClear = function() {
-            //$('#myCreateForm input[name="ProductID"]').val('');
-            //$("#myCreateForm input[name='ProductName']").val('');
-            //$("#myCreateForm input[name='SupplierID']").val('');
-            //$("#myCreateForm input[name='CategoryID']").val('');
-            //$("#myCreateForm input[name='QuantityPerUnit']").val('');
-            //$("#myCreateForm input[name='UnitPrice']").val('');
-            //$("#myCreateForm input[name='UnitsInStock']").val('');
-            //$("#myCreateForm input[name='UnitsOnOrder']").val('');
-            //$("#myCreateForm input[name='ReorderLevel']").val('');
-            //$("#myCreateForm input[name='Discontinued']").val('');
-
             $("#myCreateForm input").each(function(key, item) {
                 $(item).val("");
             });
-
         }
 
         var modifyFormClear = function() {
@@ -366,7 +367,7 @@
 
 
         $("#btnSearch").on("click",
-            function (e) {
+            function(e) {
                 e.preventDefault();
                 $("#myTable").DataTable().ajax.reload(null, false);
             });
