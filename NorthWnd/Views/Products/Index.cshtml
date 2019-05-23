@@ -195,7 +195,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="Modify()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="Modify()" id="btnModify">Save changes</button>
             </div>
         </div>
     </div>
@@ -208,6 +208,12 @@
     <script src="~/Scripts/Utility.js"></script>
 
     <script>
+        var blockUiSetting = {
+            baseZ: 2000,
+            message: "<i class='fa fa-spinner fa-pulse orange' style='font-size:600%'></i>",
+            css: { borderWidth: '0px', backgroundColor: 'transparent' }
+        };
+
         $(function() {
             $("#myTable").DataTable({
                 searching: false,
@@ -305,10 +311,13 @@
         var Modify = function() {
             var formData = $("#myModifyForm").serialize();
             var url = '@Url.Action("Modify")';
+            var beforeSend = function() {
+                $.blockUI(blockUiSetting);
+                $("#btnModify").attr("disabled", "disabled");
+            };
             var success = function(result) {
                 if (result.Succ) {
                     alert("修改成功");
-                    //$.unblockUI();
                     $("#myModifyModal").modal('hide');
                     modifyFormClear();
                     $("#myTable").DataTable().ajax.reload(null, false);
@@ -316,16 +325,25 @@
                     alert(result.Message);
                 }
             };
-            ajaxSend(null, url, formData, null, null, success, null, null);
+
+            error = function() {
+                alert("修改失敗,請洽工作人員");
+            };
+            complete = function() {
+                $.unblockUI();
+                $("#btnModify").removeAttr("disabled");
+
+            };
+
+            ajaxSend(null, url, formData, true, beforeSend, success, error, complete);
+
         };
 
         var Create = function() {
             var url = '@Url.Action("Create")';
             var formData = $("#myCreateForm").serialize();
             var beforeSend = function() {
-                $.blockUI({
-                    baseZ: 2000
-                });
+                $.blockUI(blockUiSetting);
                 $("#btnCreate").attr("disabled", "disabled");
             }
 
@@ -344,7 +362,7 @@
                 alert("系統錯誤,請洽管理人");
             };
 
-            var complete = function () {
+            var complete = function() {
                 $("#btnCreate").removeAttr("disabled");
                 $.unblockUI();
             };
@@ -371,12 +389,22 @@
             $("#Discontinued").val('');
         }
 
-
         $("#btnSearch").on("click",
             function(e) {
                 e.preventDefault();
                 $("#myTable").DataTable().ajax.reload(null, false);
             });
+
+        $('#myCreateModal').on('hidden.bs.modal',
+            function(e) {
+                createFormClear();
+            });
+
+        $('#myModifyModal').on('hidden.bs.modal',
+            function(e) {
+                modifyFormClear();
+            });
+
     </script>
 
 }

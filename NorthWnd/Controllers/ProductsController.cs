@@ -64,12 +64,10 @@ namespace NorthWnd.Controllers
                 {
                     db.Products.Remove(product);
                     db.SaveChanges();
-                    //var apiResult = new ApiResult<object>();
-                    apiresult = new ApiResult<object>();
+                    apiresult = new ApiResult<object>(product);
                 }
                 else
                 {
-                    //var apiError = new ApiError("Erro", "查無資料");
                     apiresult = new ApiError("12345", "查無資料");
                 }
             }
